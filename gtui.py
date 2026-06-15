@@ -2,7 +2,7 @@
 import os, json, base64, webbrowser, concurrent.futures
 from pathlib import Path
 from datetime import datetime
-from email.mime.text import MIMEText
+from email.message import EmailMessage
 from email.utils import parsedate_to_datetime
 
 from textual import work
@@ -311,21 +311,24 @@ class ComposeScreen(Screen):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "send-btn":
-            self.send_it()
+            to = self.query_one("#to-input").value.strip()
+            subj = self.query_one("#subj-input").value.strip()
+            body = self.query_one("#msg-body").text
+            self.send_it(to, subj, body)
         else:
             self.app.pop_screen()
 
     @work(thread=True)
-    def send_it(self) -> None:
-        to = self.query_one("#to-input").value.strip()
-        subj = self.query_one("#subj-input").value.strip()
-        body = self.query_one("#msg-body").text
+    def send_it(self, to: str, subj: str, body: str) -> None:
         if not to:
             self.app.call_from_thread(lambda: self.query_one("#compose-status").update("[red]To required[/]"))
             return
         try:
-            m = MIMEText(body)
-            m["to"] = to; m["subject"] = subj
+            from email.message import EmailMessage
+            m = EmailMessage()
+            m.set_content(body)
+            m["To"] = to
+            m["Subject"] = subj
             raw = base64.urlsafe_b64encode(m.as_bytes()).decode()
             svc = gmail_service(self.app.credentials)
             svc.users().messages().send(userId="me", body={"raw": raw}).execute()
