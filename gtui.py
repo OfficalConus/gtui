@@ -48,7 +48,7 @@ I = {
     "menu":"\uf0c9","refresh":"\uf01e","compose":"\uf044","logout":"\uf08b",
     "back":"\uf060","send":"\uf1d9","close":"\uf00d","done":"\uf00c",
     "inbox":"\uf01c","sent":"\uf1d9","starred":"\uf006","draft":"\uf0f6","trash":"\uf014",
-    "themes":"\uf013","switch":"\uf007","setup":"\uf013","login":"\uf090","mail":"\uf003",
+    "themes":"\uf013","switch":"\uf007","setup":"\uf013","login":"\uf090","mail":"\uf003","html":"\uf121",
 }
 
 THEMES = {
@@ -299,6 +299,8 @@ class ComposeScreen(Screen):
             yield Input(placeholder="Subject", id="subj-input")
             yield Static("Message:")
             yield TextArea(id="msg-body", language=None)
+            with Horizontal(id="compose-toolbar"):
+                yield Button(f" {I['html']}  HTML", id="html-btn", variant="default")
             with Horizontal(id="compose-buttons"):
                 yield Button(f" {I['send']}  Send", id="send-btn", variant="primary")
                 yield Button(f" {I['close']}  Cancel", id="cancel-btn", variant="default")
@@ -308,15 +310,23 @@ class ComposeScreen(Screen):
     def on_mount(self) -> None:
         self.query_one("#msg-body").styles.height = "12"
         self.query_one("#to-input").focus()
+        self.html = False
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
-        if event.button.id == "send-btn":
-            to = self.query_one("#to-input").value.strip()
-            subj = self.query_one("#subj-input").value.strip()
-            body = self.query_one("#msg-body").text
-            self.send_it(to, subj, body)
-        else:
-            self.app.pop_screen()
+        match event.button.id:
+            case "send-btn":
+                to = self.query_one("#to-input").value.strip()
+                subj = self.query_one("#subj-input").value.strip()
+                body = self.query_one("#msg-body").text
+                self.send_it(to, subj, body)
+            case "html-btn":
+                self.html = not self.html
+                btn = self.query_one("#html-btn")
+                btn.variant = "primary" if self.html else "default"
+                btn.label = f" {I['html']}  HTML" if not self.html else f" {I['html']} HTML"
+                self.query_one("#compose-status").update("[dim]HTML mode on[/]" if self.html else "")
+            case _:
+                self.app.pop_screen()
 
     @work(thread=True)
     def send_it(self, to: str, subj: str, body: str) -> None:
@@ -324,9 +334,8 @@ class ComposeScreen(Screen):
             self.app.call_from_thread(lambda: self.query_one("#compose-status").update("[red]To required[/]"))
             return
         try:
-            from email.message import EmailMessage
-            m = EmailMessage()
-            m.set_content(body)
+            from email.mime.text import MIMEText
+            m = MIMEText(body, "html" if self.html else "plain")
             m["To"] = to
             m["Subject"] = subj
             raw = base64.urlsafe_b64encode(m.as_bytes()).decode()
