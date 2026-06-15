@@ -12,15 +12,13 @@ body {
   font-family:'JetBrains Mono',monospace;
   min-height:100vh;
   display:flex; align-items:center; justify-content:center;
-  position:relative; overflow:hidden;
+  position:relative; overflow-x:hidden;
 }
-/* CRT scan lines */
 body::after {
   content:''; position:fixed; inset:0;
   background:repeating-linear-gradient(0deg,rgba(0,255,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 2px);
   pointer-events:none; z-index:999;
 }
-/* CRT flicker */
 @keyframes flicker {
   0%,100%{opacity:1}
   3%{opacity:.85}
@@ -34,11 +32,10 @@ body::after {
 .terminal {
   animation:flicker 8s infinite;
   background:#0d0d0d; border:1px solid #33ff33;
-  border-radius:4px; padding:2rem; width:90%; max-width:700px;
+  border-radius:4px; padding:2rem; width:95%; max-width:780px;
   position:relative; z-index:1;
   box-shadow:0 0 30px rgba(0,255,0,.1),inset 0 0 30px rgba(0,255,0,.02);
 }
-/* scan line shadow over terminal */
 .terminal::before {
   content:''; position:absolute; inset:0;
   background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,0,.02) 2px,rgba(0,255,0,.02) 3px);
@@ -47,39 +44,44 @@ body::after {
 .prompt { color:#33ff33; font-weight:700; }
 .cursor { animation:blink 1s step-end infinite; }
 @keyframes blink { 50%{opacity:0} }
-.line { margin:.3rem 0; white-space:pre-wrap; word-break:break-all; }
+.line { margin:.2rem 0; white-space:pre-wrap; word-break:break-all; }
 .dim { color:#1a7a1a; }
-.green { color:#33ff33; }
 .gray { color:#555; }
 .a { color:#0f0; text-decoration:none; }
 .a:hover { text-shadow:0 0 10px #33ff33; }
-.typing { overflow:hidden; border-right:2px solid #33ff33; white-space:nowrap; animation:typing 2s steps(30) forwards; width:0; }
-@keyframes typing { to{width:100%} }
-.spacer { height:1rem; }
+.ascii { color:#33ff33; line-height:1; font-size:10px; }
+.ascii .line { margin:0; }
+.spacer { height:.7rem; }
 </style>
 </head>
 <body>
 <div class="terminal">
-<div class="line"><span class="prompt">$</span> <span class="typing" style="display:inline-block">cat /home/gtui/README.md</span></div>
+<div class="ascii"><div class="line">                                                                                </div>
+<div class="line">    ▄▄▄▄                          ██     ▄▄▄▄      ▄▄▄▄▄▄▄▄  ▄▄    ▄▄   ▄▄▄▄▄▄  </div>
+<div class="line">  ██▀▀▀▀█                         ▀▀     ▀▀██      ▀▀▀██▀▀▀  ██    ██   ▀▀██▀▀  </div>
+<div class="line"> ██        ████▄██▄   ▄█████▄   ████       ██         ██     ██    ██     ██    </div>
+<div class="line"> ██  ▄▄▄▄  ██ ██ ██   ▀ ▄▄▄██     ██       ██         ██     ██    ██     ██    </div>
+<div class="line"> ██  ▀▀██  ██ ██ ██  ▄██▀▀▀██     ██       ██         ██     ██    ██     ██    </div>
+<div class="line">  ██▄▄▄██  ██ ██ ██  ██▄▄▄███  ▄▄▄██▄▄▄    ██▄▄▄      ██     ▀██▄▄██▀   ▄▄██▄▄  </div>
+<div class="line">    ▀▀▀▀   ▀▀ ▀▀ ▀▀   ▀▀▀▀ ▀▀  ▀▀▀▀▀▀▀▀     ▀▀▀▀      ▀▀       ▀▀▀▀     ▀▀▀▀▀▀  </div>
+<div class="line">                                                                                </div>
+<div class="line">                                                                                </div></div>
+
 <div class="spacer"></div>
-<div class="line"><span class="dim"># GTUI — Gmail TUI</span></div>
-<div class="line"><span class="dim"># Terminal client for Gmail</span></div>
+<div class="line"><span class="prompt">$</span> cat README.md</div>
+<div class="spacer"></div>
+<div class="line"><span class="dim"># GTUI — Gmail TUI client</span></div>
+<div class="line"><span class="gray">9 Catppuccin Mocha variants · Nerd Font icons</span></div>
 <div class="spacer"></div>
 <div class="line"><span class="prompt">$</span> ls features/</div>
 <div class="line">  read/     send/     modify/     themes/</div>
 <div class="spacer"></div>
-<div class="line"><span class="prompt">$</span> cat features/themes</div>
-<div class="line"><span class="dim">9 Mocha accent variants</span></div>
-<div class="line">  mauve  blue  pink  green  peach</div>
-<div class="line">  red    teal  rosewater  yellow</div>
-<div class="spacer"></div>
-<div class="line"><span class="prompt">$</span> uptime</div>
-<div class="line">  active · responsive · nerd font icons</div>
+<div class="line"><span class="prompt">$</span> uname -a</div>
+<div class="line">  Linux responsive icon-only-mode tty</div>
 <div class="spacer"></div>
 <div class="line"><span class="prompt">$</span> <span class="cursor">▊</span></div>
 <div class="spacer"></div>
-<div class="line"><span class="dim">[1] <a class="a" href="https://github.com/OfficalConus/gtui">git clone</a></span></div>
-<div class="line"><span class="dim">[2] <a class="a" href="https://github.com/OfficalConus/gtui/releases">download</a></span></div>
+<div class="line"><span class="dim">[<a class="a" href="https://github.com/OfficalConus/gtui">clone</a>] [<a class="a" href="https://github.com/OfficalConus/gtui/releases">download</a>]</span></div>
 </div>
 </body>
 </html>
