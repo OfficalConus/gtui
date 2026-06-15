@@ -6,3 +6,7 @@ __pycache__/
 *.pyc
 lib64
 dist/
+build/
+*.spec
+share/
+__pycache__/
