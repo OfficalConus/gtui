@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTUI — Gmail TUI for Catppuccin</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#1e1e2e; color:#cdd6f4; font-family:Inter,sans-serif; }
+header { background:#11111b; border-bottom:2px solid #cba6f7; padding:2rem 0; text-align:center; }
+header h1 { font-size:2.5rem; color:#cba6f7; }
+header p { color:#a6adc8; margin-top:.5rem; }
+.container { max-width:1000px; margin:0 auto; padding:2rem; }
+section { margin:3rem 0; }
+h2 { color:#cba6f7; margin-bottom:1rem; font-size:1.5rem; }
+.grid { display:grid; gap:1rem; }
+.flavours { grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); }
+.flavour-card { background:#181825; border:1px solid #313244; border-radius:12px; padding:1.5rem; text-align:center; }
+.flavour-card h3 { margin-bottom:.5rem; }
+.flavour-card .preview { height:80px; border-radius:8px; margin:1rem 0; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.9rem; }
+.flavour-card .hex { font-size:.8rem; color:#a6adc8; }
+.btn { display:inline-block; background:#cba6f7; color:#1e1e2e; padding:.6rem 1.5rem; border-radius:8px; text-decoration:none; font-weight:600; margin:.3rem; }
+.btn:hover { background:#b4befe; }
+code { background:#313244; padding:.2rem .5rem; border-radius:4px; font-size:.9rem; }
+footer { text-align:center; padding:2rem; color:#585b70; }
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>GTUI</h1>
+<p>Gmail TUI client — 9 Catppuccin Mocha variants</p>
+<a class="btn" href="https://github.com/OfficalConus/gtui">GitHub</a>
+<a class="btn" href="#install">Install</a>
+</div>
+</header>
+
+<div class="container">
+
+<section id="flavours">
+<h2>Flavours</h2>
+<div class="grid flavours" id="flavourGrid"></div>
+</section>
+
+<section id="features">
+<h2>Features</h2>
+<ul style="columns:2;list-style:none;line-height:2.2">
+<li>✓ Gmail API (read, send, modify)</li>
+<li>✓ OAuth 2.0 authentication</li>
+<li>✓ 9 Catppuccin Mocha accent variants</li>
+<li>✓ Responsive icon-only mode</li>
+<li>✓ Nerd Font icons</li>
+<li>✓ Folder navigation</li>
+<li>✓ Compose & send emails</li>
+<li>✓ Mouse support (Textual)</li>
+</ul>
+</section>
+
+<section id="install">
+<h2>Install</h2>
+<pre style="background:#11111b;padding:1rem;border-radius:8px;overflow-x:auto"><code>git clone https://github.com/OfficalConus/gtui.git
+cd gtui
+python3 gtui.py</code></pre>
+<p style="margin-top:.5rem;color:#a6adc8">Requires OAuth credentials in <code>~/.gmail-tui/client_secret.json</code></p>
+</section>
+
+</div>
+
+<footer>
+GTUI &middot; Catppuccin Mocha &middot; MIT
+</footer>
+
+<script>
+const FLAVOURS = [
+  {name:"Mocha Mauve",    hex:"#cba6f7", bg:"#cba6f7", text:"#1e1e2e"},
+  {name:"Mocha Blue",     hex:"#89b4fa", bg:"#89b4fa", text:"#1e1e2e"},
+  {name:"Mocha Pink",     hex:"#f5c2e7", bg:"#f5c2e7", text:"#1e1e2e"},
+  {name:"Mocha Green",    hex:"#a6e3a1", bg:"#a6e3a1", text:"#1e1e2e"},
+  {name:"Mocha Peach",    hex:"#fab387", bg:"#fab387", text:"#1e1e2e"},
+  {name:"Mocha Red",      hex:"#f38ba8", bg:"#f38ba8", text:"#1e1e2e"},
+  {name:"Mocha Teal",     hex:"#94e2d5", bg:"#94e2d5", text:"#1e1e2e"},
+  {name:"Mocha Rosewater",hex:"#f5e0dc", bg:"#f5e0dc", text:"#1e1e2e"},
+  {name:"Mocha Yellow",   hex:"#f9e2af", bg:"#f9e2af", text:"#1e1e2e"},
+];
+const grid = document.getElementById('flavourGrid');
+FLAVOURS.forEach(f => {
+  const c = document.createElement('div');
+  c.className = 'flavour-card';
+  c.innerHTML = `<h3>${f.name}</h3>
+    <div class="preview" style="background:${f.bg};color:${f.text}">Aa</div>
+    <div class="hex">${f.hex}</div>`;
+  grid.appendChild(c);
+});
+</script>
+</body>
+</html>
