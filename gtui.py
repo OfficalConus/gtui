@@ -61,6 +61,7 @@ THEMES = {
     "mocha-teal":     {"p": "#94e2d5", "s": "#89dceb", "l": "Mocha Teal"},
     "mocha-rosewater":{"p": "#f5e0dc", "s": "#f2cdcd", "l": "Mocha Rosewater"},
     "mocha-yellow":   {"p": "#f9e2af", "s": "#fab387", "l": "Mocha Yellow"},
+    "matrix":         {"p": "#00ff41", "s": "#00cc33", "l": "Matrix"},
 }
 
 KEYS = list(THEMES.keys())
@@ -571,11 +572,16 @@ class GmailApp(App):
 
     def on_mount(self) -> None:
         for k, t in THEMES.items():
+            bg = "#0a0a0a" if k == "matrix" else B
+            sf = "#0d0d0d" if k == "matrix" else SURF
+            pn = "#000000" if k == "matrix" else PNL
+            tx = "#00ff41" if k == "matrix" else TEXT
+            bs = "#004400" if k == "matrix" else BOOST
             self.register_theme(Theme(
                 name=k, dark=True,
                 primary=t["p"], secondary=t["s"], accent=t["p"],
-                background=B, surface=SURF, panel=PNL,
-                foreground=TEXT, boost=BOOST,
+                background=bg, surface=sf, panel=pn,
+                foreground=tx, boost=bs,
                 error="#f38ba8", success="#a6e3a1", warning="#f9e2af",
             ))
         self.theme = load_theme()
