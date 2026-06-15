@@ -320,8 +320,8 @@ class ComposeScreen(Screen):
         to = self.query_one("#to-input").value.strip()
         subj = self.query_one("#subj-input").value.strip()
         body = self.query_one("#msg-body").text
-        if not to or not subj:
-            self.app.call_from_thread(lambda: self.query_one("#compose-status").update("[red]To + Subject required[/]"))
+        if not to:
+            self.app.call_from_thread(lambda: self.query_one("#compose-status").update("[red]To required[/]"))
             return
         try:
             m = MIMEText(body)
